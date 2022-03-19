@@ -25,15 +25,14 @@ struct ContentView: View {
                         Spacer()
                         
                         Button(action: viewModel.updateData) {
-                            Image(systemName: "plus")
+                            Image(systemName: "arrow.clockwise")
                         }
-                        
                         LineView(data: viewModel.chart, title: "Price chart")
                     }
                     .onAppear(perform: viewModel.updateData)
                 }
                 .padding()
-                Spacer()
+                
             }
             .navigationBarItems(leading: Text("Bitcoin price").font(.title2).bold(), trailing: NavigationLink("⚙", destination: SettingsView(colorScheme: $myColorScheme)))
             .navigationBarTitleDisplayMode(.inline)

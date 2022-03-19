@@ -65,7 +65,6 @@
 				38B2AF3027D8021400535D1A /* Models */,
 				38B2AF2F27D8020900535D1A /* Views */,
 				38B2AF2E27D8020100535D1A /* Controllers */,
-				38B2AF2427D801F200535D1A /* Assets.xcassets */,
 				38B2AF2627D801F200535D1A /* Preview Content */,
 			);
 			path = BitcoinActualPrice;
@@ -74,6 +73,7 @@
 		38B2AF2627D801F200535D1A /* Preview Content */ = {
 			isa = PBXGroup;
 			children = (
+				38B2AF2427D801F200535D1A /* Assets.xcassets */,
 				38B2AF2727D801F200535D1A /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";

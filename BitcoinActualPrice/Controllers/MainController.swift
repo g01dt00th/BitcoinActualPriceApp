@@ -10,7 +10,7 @@ import Alamofire
 
 final class ViewModel: ObservableObject {
     @Published var data: QuoteData?
-    @Published var chart: [Double] = [40000]
+    @Published var chart: [Double] = []
     var appendedItem: String = ""
     
     func updateData() {
