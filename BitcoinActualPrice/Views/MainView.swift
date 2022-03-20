@@ -11,6 +11,8 @@ import SwiftUICharts
 struct ContentView: View {
     
     @ObservedObject var viewModel = ViewModel()
+    @State var countTimer = 0
+    @State private var timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     @Environment(\.colorScheme) var systemColorScheme
     @State var myColorScheme: ColorScheme?
     
@@ -21,18 +23,22 @@ struct ContentView: View {
                     VStack(alignment: .leading) {
                         
                         Text("Time to update: \(viewModel.data?.time.updated ?? "")")
+                            .onReceive(timer) { _ in
+                                if countTimer != 60{
+                                    countTimer += 1
+                                    if countTimer == 60 {
+                                        viewModel.updateData()
+                                        countTimer = 0
+                                    }
+                                }
+                            }
                         Text("Actual rate: \(viewModel.data?.bpi.usd.rate ?? "") \(viewModel.data?.bpi.usd.code ?? "")")
                         Spacer()
-                        
-                        Button(action: viewModel.updateData) {
-                            Image(systemName: "arrow.clockwise")
-                        }
                         LineView(data: viewModel.chart, title: "Price chart")
                     }
                     .onAppear(perform: viewModel.updateData)
                 }
                 .padding()
-                
             }
             .navigationBarItems(leading: Text("Bitcoin price").font(.title2).bold(), trailing: NavigationLink("⚙", destination: SettingsView(colorScheme: $myColorScheme)))
             .navigationBarTitleDisplayMode(.inline)
