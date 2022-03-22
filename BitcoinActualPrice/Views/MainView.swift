@@ -9,12 +9,11 @@ import SwiftUI
 import SwiftUICharts
 
 struct ContentView: View {
+    @StateObject private var viewModel = ViewModel()
+    @Environment(\.colorScheme) private var systemColorScheme
+    @State private var myColorScheme: ColorScheme?
     
-    @ObservedObject var viewModel = ViewModel()
-    @State var countTimer = 0
-    @State private var timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
-    @Environment(\.colorScheme) var systemColorScheme
-    @State var myColorScheme: ColorScheme?
+    private let timer = Timer.publish(every: 60, on: .main, in: .common).autoconnect()
     
     var body: some View {
         NavigationView {
@@ -23,17 +22,11 @@ struct ContentView: View {
                     VStack(alignment: .leading) {
                         
                         Text("Time to update: \(viewModel.data?.time.updated ?? "")")
-                            .onReceive(timer) { _ in
-                                if countTimer != 60{
-                                    countTimer += 1
-                                    if countTimer == 60 {
-                                        viewModel.updateData()
-                                        countTimer = 0
-                                    }
-                                }
-                            }
+                        
                         Text("Actual rate: \(viewModel.data?.bpi.usd.rate ?? "") \(viewModel.data?.bpi.usd.code ?? "")")
+                        
                         Spacer()
+                        
                         LineView(data: viewModel.chart, title: "Price chart")
                     }
                     .onAppear(perform: viewModel.updateData)
@@ -44,6 +37,9 @@ struct ContentView: View {
             .navigationBarTitleDisplayMode(.inline)
         }
         .colorScheme(myColorScheme ?? systemColorScheme)
+        .onReceive(timer) { _ in
+            viewModel.updateData()
+        }
     }
 }
 
